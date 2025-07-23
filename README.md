@@ -117,3 +117,37 @@ python src/main.py
 - **通知**: ChatWork API
 - **デプロイ**: 任意のPythonホスティング環境
 
+
+
+## デプロイ方法
+
+このアプリケーションは複数のプラットフォームにデプロイできます。
+
+### Render.com（推奨）
+
+1. GitHubリポジトリをRender.comに接続
+2. 以下の設定を使用：
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `./start.sh`
+3. 環境変数を設定：
+   - `CHATWORK_API_TOKEN`
+   - `CHATWORK_ROOM_ID`
+   - `FLASK_ENV=production`
+
+### Heroku
+
+```bash
+heroku create your-app-name
+heroku config:set CHATWORK_API_TOKEN=your_token
+heroku config:set CHATWORK_ROOM_ID=your_room_id
+git push heroku main
+```
+
+### Vercel
+
+```bash
+vercel --prod
+```
+
+詳細なデプロイ手順については、プロジェクトに含まれる `flask-deployment-guide.md` を参照してください。
+
