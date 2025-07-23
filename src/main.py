@@ -21,12 +21,16 @@ app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(inventory_bp, url_prefix='/api')
 app.register_blueprint(chatwork_bp, url_prefix='/api')
 
-# データベース設定 - 本番環境対応
-if os.environ.get('FLASK_ENV') == 'production':
-    # 本番環境ではインメモリSQLiteを使用
+# データベース設定 - 環境に応じて自動切り替え
+database_url = os.environ.get('DATABASE_URL')
+if database_url:
+    # PostgreSQL使用（本番環境）
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+elif os.environ.get('FLASK_ENV') == 'production':
+    # インメモリSQLite（本番環境でPostgreSQLが設定されていない場合）
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 else:
-    # 開発環境では通常のファイルベースSQLite
+    # ファイルベースSQLite（開発環境）
     app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
