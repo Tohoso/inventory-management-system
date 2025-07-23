@@ -21,8 +21,14 @@ app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(inventory_bp, url_prefix='/api')
 app.register_blueprint(chatwork_bp, url_prefix='/api')
 
-# uncomment if you need to use database
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+# データベース設定 - 本番環境対応
+if os.environ.get('FLASK_ENV') == 'production':
+    # 本番環境ではインメモリSQLiteを使用
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+else:
+    # 開発環境では通常のファイルベースSQLite
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 with app.app_context():
