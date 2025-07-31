@@ -21,27 +21,22 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 30px;
             text-align: center;
+            color: white;
+            margin-bottom: 30px;
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
-            font-size: 1.2em;
+            font-size: 1.1rem;
             opacity: 0.9;
         }
 
@@ -49,61 +44,59 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
+            margin-bottom: 30px;
         }
 
         .stat-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
         }
 
         .stat-number {
-            font-size: 2.5em;
+            font-size: 2.5rem;
             font-weight: bold;
-            color: #4facfe;
-            margin-bottom: 10px;
+            color: #4a5568;
+            margin-bottom: 5px;
         }
 
         .stat-label {
-            color: #666;
-            font-size: 1.1em;
+            color: #718096;
+            font-size: 0.9rem;
         }
 
         .controls {
-            padding: 30px;
-            background: white;
-            border-bottom: 1px solid #eee;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
 
         .control-group {
             display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 20px;
             flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
         }
 
         .btn {
             padding: 12px 24px;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
+            font-size: 1rem;
             font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-primary {
@@ -111,42 +104,32 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
-        }
-
         .btn-secondary {
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(168, 237, 234, 0.4);
+            color: #4a5568;
         }
 
         .btn-warning {
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #333;
+            color: #4a5568;
         }
 
-        .btn-warning:hover {
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(252, 182, 159, 0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .filter-group {
             display: flex;
-            gap: 15px;
             flex-wrap: wrap;
+            gap: 10px;
         }
 
         .filter-select {
             padding: 10px 15px;
-            border: 2px solid #e1e5e9;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 1rem;
             background: white;
             cursor: pointer;
             transition: border-color 0.3s ease;
@@ -158,39 +141,38 @@
         }
 
         .inventory-grid {
-            padding: 30px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
         }
 
         .inventory-item {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
             border-left: 5px solid #4facfe;
         }
 
         .inventory-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
         .inventory-item.low-stock {
-            border-left-color: #ff6b6b;
-            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-left-color: #f6ad55;
+            background: rgba(255, 248, 220, 0.95);
         }
 
         .inventory-item.out-of-stock {
-            border-left-color: #ff4757;
-            background: linear-gradient(135deg, #ffe0e0 0%, #ffb3b3 100%);
+            border-left-color: #fc8181;
+            background: rgba(255, 235, 235, 0.95);
         }
 
         .inventory-item.cut-item {
-            border-left-color: #3742fa;
-            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            border-left-color: #68d391;
+            background: rgba(240, 255, 244, 0.95);
         }
 
         .item-header {
@@ -201,143 +183,140 @@
         }
 
         .item-name {
-            font-size: 1.3em;
+            font-size: 1.3rem;
             font-weight: bold;
-            color: #333;
+            color: #2d3748;
             margin-bottom: 5px;
         }
 
         .item-meta {
-            font-size: 0.9em;
-            color: #666;
+            font-size: 0.9rem;
+            color: #718096;
         }
 
-        .stock-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
+        .stock-info, .cut-info {
             margin-bottom: 15px;
         }
 
         .stock-display {
-            font-size: 1.5em;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #4facfe;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f7fafc;
         }
 
         .stock-display.low {
-            color: #ff6b6b;
+            background: #fed7d7;
+            color: #c53030;
         }
 
         .stock-display.out {
-            color: #ff4757;
-        }
-
-        .cut-info {
-            background: #e6f3ff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 2px solid #3742fa;
+            background: #fed7d7;
+            color: #c53030;
         }
 
         .cut-display {
-            display: flex;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             margin-bottom: 10px;
         }
 
         .cut-field {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .cut-field label {
-            display: block;
-            font-size: 0.9em;
-            color: #666;
+            font-size: 0.9rem;
+            color: #4a5568;
             margin-bottom: 5px;
         }
 
         .cut-input {
-            width: 100%;
             padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .cut-input:focus {
+            outline: none;
+            border-color: #4facfe;
         }
 
         .stock-controls {
             display: flex;
-            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+            gap: 8px;
         }
 
         .stock-btn {
             padding: 8px 12px;
             border: none;
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 60px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .stock-btn.decrease {
-            background: #ff6b6b;
-            color: white;
+            background: #fed7d7;
+            color: #c53030;
         }
 
         .stock-btn.increase {
-            background: #51cf66;
-            color: white;
+            background: #c6f6d5;
+            color: #2f855a;
         }
 
         .stock-btn.order {
-            background: #4c6ef5;
-            color: white;
+            background: #bee3f8;
+            color: #2b6cb0;
         }
 
         .stock-btn.update {
-            background: #3742fa;
-            color: white;
+            background: #e9d8fd;
+            color: #6b46c1;
         }
 
         .stock-btn:hover {
             transform: translateY(-1px);
-            opacity: 0.9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
         .order-notification {
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .notification-btn {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
-            color: white;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #4a5568;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
+            font-size: 1rem;
             font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .notification-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .loading {
             text-align: center;
-            padding: 50px;
-            font-size: 1.2em;
-            color: #666;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: #4a5568;
+            grid-column: 1 / -1;
         }
 
         .notification {
@@ -358,35 +337,32 @@
         }
 
         .notification.success {
-            background: #51cf66;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
         }
 
         .notification.error {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
         }
 
         @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
             .inventory-grid {
                 grid-template-columns: 1fr;
-                padding: 15px;
             }
-            
-            .controls {
-                padding: 15px;
-            }
-            
+
             .control-group {
                 flex-direction: column;
-                align-items: stretch;
             }
-            
+
             .filter-group {
                 flex-direction: column;
             }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-                padding: 15px;
+
+            .cut-display {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -395,7 +371,7 @@
     <div class="container">
         <div class="header">
             <h1>🏪 在庫管理システム</h1>
-            <p>Supabase版 - リアルタイム在庫管理（カット数対応）</p>
+            <p>Supabase版・リアルタイム在庫管理（カット数対応）</p>
         </div>
 
         <div class="stats">
@@ -458,21 +434,10 @@
 
     <script>
         // 環境変数から設定を取得（Vercel環境変数対応）
-        const SUPABASE_URL = window.location.hostname === 'localhost' 
-            ? 'https://yyoixwdljeoxtieeazfo.supabase.co'
-            : (typeof process !== 'undefined' && process.env.SUPABASE_URL) || 'https://yyoixwdljeoxtieeazfo.supabase.co'
-        
-        const SUPABASE_ANON_KEY = window.location.hostname === 'localhost'
-            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
-            : (typeof process !== 'undefined' && process.env.SUPABASE_ANON_KEY) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
-
-        const CHATWORK_API_TOKEN = window.location.hostname === 'localhost'
-            ? '5f149c4cd0bf7044e532b70d574ba655'
-            : (typeof process !== 'undefined' && process.env.CHATWORK_API_TOKEN) || '5f149c4cd0bf7044e532b70d574ba655'
-
-        const CHATWORK_ROOM_ID = window.location.hostname === 'localhost'
-            ? '405830596'
-            : (typeof process !== 'undefined' && process.env.CHATWORK_ROOM_ID) || '405830596'
+        const SUPABASE_URL = 'https://yyoixwdljeoxtieeazfo.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
+        const CHATWORK_API_TOKEN = '5f149c4cd0bf7044e532b70d574ba655'
+        const CHATWORK_ROOM_ID = '405830596'
 
         let inventoryData = []
         let filteredData = []
@@ -494,7 +459,8 @@
                 headers: {
                     'apikey': SUPABASE_ANON_KEY,
                     'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
                 }
             }
 
@@ -517,6 +483,11 @@
                     const errorText = await response.text()
                     console.error('Supabase Error Response:', errorText)
                     throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+                }
+                
+                // PATCHリクエストの場合、レスポンスボディが空の場合がある
+                if (options.method === 'PATCH' && response.status === 204) {
+                    return { success: true }
                 }
                 
                 const data = await response.json()
@@ -773,6 +744,7 @@
                     })
                 })
 
+                // ローカルデータも更新
                 const itemIndex = inventoryData.findIndex(item => item.id === itemId)
                 if (itemIndex !== -1) {
                     inventoryData[itemIndex].current_stock = bottles
@@ -784,7 +756,7 @@
                 showNotification('カット数を更新しました', 'success')
             } catch (error) {
                 console.error('Error updating cut stock:', error)
-                showNotification('カット数更新中にエラーが発生しました', 'error')
+                showNotification(`カット数更新エラー: ${error.message}`, 'error')
             }
         }
 
@@ -801,6 +773,7 @@
                     body: JSON.stringify({ current_stock: newStock })
                 })
 
+                // ローカルデータも更新
                 const itemIndex = inventoryData.findIndex(item => item.id === itemId)
                 if (itemIndex !== -1) {
                     inventoryData[itemIndex].current_stock = newStock
@@ -811,7 +784,7 @@
                 showNotification('在庫を更新しました', 'success')
             } catch (error) {
                 console.error('Error updating stock:', error)
-                showNotification('在庫更新中にエラーが発生しました', 'error')
+                showNotification(`在庫更新エラー: ${error.message}`, 'error')
             }
         }
 
@@ -824,7 +797,7 @@
                 }
             } catch (error) {
                 console.error('Error sending order notification:', error)
-                showNotification('発注通知の送信に失敗しました', 'error')
+                showNotification(`発注通知エラー: ${error.message}`, 'error')
             }
         }
 
@@ -852,6 +825,8 @@
 
 送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
 
+                console.log('Sending ChatWork message:', message)
+
                 const response = await fetch(`https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`, {
                     method: 'POST',
                     headers: {
@@ -861,16 +836,20 @@
                     body: new URLSearchParams({ body: message })
                 })
 
+                console.log('ChatWork Response Status:', response.status)
+
                 if (response.ok) {
+                    const result = await response.json()
+                    console.log('ChatWork Response:', result)
                     showNotification('ChatWork通知を送信しました', 'success')
                 } else {
                     const errorText = await response.text()
-                    console.error('ChatWork API Error:', errorText)
-                    showNotification('ChatWork通知の送信に失敗しました', 'error')
+                    console.error('ChatWork API Error:', response.status, errorText)
+                    throw new Error(`ChatWork API Error: ${response.status} - ${errorText}`)
                 }
             } catch (error) {
                 console.error('Error sending ChatWork notification:', error)
-                showNotification('ChatWork通知の送信中にエラーが発生しました', 'error')
+                showNotification(`ChatWork通知エラー: ${error.message}`, 'error')
             }
         }
 
@@ -884,6 +863,8 @@
 
 送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
 
+                console.log('Sending ChatWork test message:', testMessage)
+
                 const response = await fetch(`https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`, {
                     method: 'POST',
                     headers: {
@@ -893,16 +874,20 @@
                     body: new URLSearchParams({ body: testMessage })
                 })
 
+                console.log('ChatWork Test Response Status:', response.status)
+
                 if (response.ok) {
+                    const result = await response.json()
+                    console.log('ChatWork Test Response:', result)
                     showNotification('ChatWorkテスト通知を送信しました', 'success')
                 } else {
                     const errorText = await response.text()
-                    console.error('ChatWork API Error:', errorText)
-                    showNotification('ChatWorkテスト通知の送信に失敗しました', 'error')
+                    console.error('ChatWork Test API Error:', response.status, errorText)
+                    throw new Error(`ChatWork API Error: ${response.status} - ${errorText}`)
                 }
             } catch (error) {
-                console.error('Error sending test notification:', error)
-                showNotification('ChatWorkテスト通知の送信中にエラーが発生しました', 'error')
+                console.error('Error sending ChatWork test notification:', error)
+                showNotification(`ChatWorkテストエラー: ${error.message}`, 'error')
             }
         }
 
@@ -911,12 +896,18 @@
             const notification = document.createElement('div')
             notification.className = `notification ${type}`
             notification.textContent = message
+            
             document.body.appendChild(notification)
-
-            setTimeout(() => notification.classList.add('show'), 100)
+            
+            setTimeout(() => {
+                notification.classList.add('show')
+            }, 100)
+            
             setTimeout(() => {
                 notification.classList.remove('show')
-                setTimeout(() => document.body.removeChild(notification), 300)
+                setTimeout(() => {
+                    document.body.removeChild(notification)
+                }, 300)
             }, 3000)
         }
     </script>
