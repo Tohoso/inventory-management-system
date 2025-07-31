@@ -12,75 +12,88 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
         }
 
+        /* ヘッダー */
         .header {
             text-align: center;
-            color: white;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #000000;
         }
 
         .header h1 {
             font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1rem;
+            color: #666666;
+            font-weight: 300;
         }
 
+        /* 統計カード */
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 15px;
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 30px 20px;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 0 0 2px #000000;
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #4a5568;
-            margin-bottom: 5px;
+            font-size: 3rem;
+            font-weight: 100;
+            color: #000000;
+            margin-bottom: 10px;
         }
 
         .stat-label {
-            color: #718096;
             font-size: 0.9rem;
+            color: #666666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        /* コントロールパネル */
         .controls {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 30px;
+            margin-bottom: 40px;
         }
 
         .control-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         .control-group:last-child {
@@ -88,58 +101,56 @@
         }
 
         .btn {
+            background: #ffffff;
+            border: 1px solid #000000;
+            color: #000000;
             padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-decoration: none;
             display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            color: #4a5568;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #4a5568;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .btn-primary {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #333333;
         }
 
         .filter-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
         .filter-select {
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: white;
+            background: #ffffff;
+            border: 1px solid #000000;
+            color: #000000;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            min-width: 150px;
             cursor: pointer;
-            transition: border-color 0.3s ease;
         }
 
         .filter-select:focus {
             outline: none;
-            border-color: #4facfe;
+            box-shadow: 0 0 0 2px #000000;
         }
 
+        /* 在庫グリッド */
         .inventory-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -147,81 +158,83 @@
         }
 
         .inventory-item {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease;
-            border-left: 5px solid #4facfe;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            transition: all 0.2s ease;
         }
 
         .inventory-item:hover {
-            transform: translateY(-5px);
+            border-color: #000000;
         }
 
         .inventory-item.low-stock {
-            border-left-color: #f6ad55;
-            background: rgba(255, 248, 220, 0.95);
+            border-color: #ff6b35;
+            border-width: 2px;
         }
 
         .inventory-item.out-of-stock {
-            border-left-color: #fc8181;
-            background: rgba(255, 235, 235, 0.95);
+            border-color: #ff0000;
+            border-width: 2px;
         }
 
         .inventory-item.cut-item {
-            border-left-color: #68d391;
-            background: rgba(240, 255, 244, 0.95);
+            border-color: #007bff;
+            border-width: 2px;
         }
 
+        /* アイテムヘッダー */
         .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .item-name {
             font-size: 1.3rem;
-            font-weight: bold;
-            color: #2d3748;
-            margin-bottom: 5px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: #000000;
         }
 
         .item-meta {
-            font-size: 0.9rem;
-            color: #718096;
+            font-size: 0.85rem;
+            color: #666666;
+            line-height: 1.4;
         }
 
+        /* 在庫情報 */
         .stock-info, .cut-info {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .stock-display {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 8px;
-            background: #f7fafc;
-        }
-
-        .stock-display.low {
-            background: #fed7d7;
-            color: #c53030;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            text-align: center;
         }
 
         .stock-display.out {
-            background: #fed7d7;
-            color: #c53030;
+            background: #ffe6e6;
+            border-color: #ff0000;
+            color: #cc0000;
         }
 
+        .stock-display.low {
+            background: #fff3e6;
+            border-color: #ff6b35;
+            color: #cc4400;
+        }
+
+        /* カット数表示 */
         .cut-display {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .cut-field {
@@ -230,24 +243,27 @@
         }
 
         .cut-field label {
-            font-size: 0.9rem;
-            color: #4a5568;
+            font-size: 0.8rem;
+            color: #666666;
             margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .cut-input {
-            padding: 8px;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 10px;
             font-size: 1rem;
             text-align: center;
         }
 
         .cut-input:focus {
             outline: none;
-            border-color: #4facfe;
+            box-shadow: 0 0 0 2px #000000;
         }
 
+        /* ボタンコントロール */
         .stock-controls {
             display: flex;
             flex-wrap: wrap;
@@ -255,79 +271,101 @@
         }
 
         .stock-btn {
+            background: #ffffff;
+            border: 1px solid #000000;
+            color: #000000;
             padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s ease;
-        }
-
-        .stock-btn.decrease {
-            background: #fed7d7;
-            color: #c53030;
-        }
-
-        .stock-btn.increase {
-            background: #c6f6d5;
-            color: #2f855a;
-        }
-
-        .stock-btn.order {
-            background: #bee3f8;
-            color: #2b6cb0;
-        }
-
-        .stock-btn.update {
-            background: #e9d8fd;
-            color: #6b46c1;
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+            font-weight: 400;
         }
 
         .stock-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            background: #000000;
+            color: #ffffff;
         }
 
+        .stock-btn.decrease {
+            border-color: #ff6b35;
+            color: #ff6b35;
+        }
+
+        .stock-btn.decrease:hover {
+            background: #ff6b35;
+            color: #ffffff;
+        }
+
+        .stock-btn.increase {
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        .stock-btn.increase:hover {
+            background: #28a745;
+            color: #ffffff;
+        }
+
+        .stock-btn.order {
+            border-color: #007bff;
+            color: #007bff;
+            font-weight: 500;
+        }
+
+        .stock-btn.order:hover {
+            background: #007bff;
+            color: #ffffff;
+        }
+
+        .stock-btn.update {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .stock-btn.update:hover {
+            background: #6c757d;
+            color: #ffffff;
+        }
+
+        /* 発注通知 */
         .order-notification {
-            margin-top: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
         }
 
         .notification-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            color: #4a5568;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            background: #ff6b35;
+            border: 1px solid #ff6b35;
+            color: #ffffff;
+            padding: 12px 20px;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            width: 100%;
+            transition: all 0.2s ease;
+            font-weight: 500;
         }
 
         .notification-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: #e55a2b;
+            border-color: #e55a2b;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2rem;
-            color: #4a5568;
-            grid-column: 1 / -1;
-        }
-
+        /* 通知メッセージ */
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
+            background: #ffffff;
+            border: 2px solid #000000;
+            color: #000000;
             padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
             z-index: 1000;
+            max-width: 400px;
+            font-weight: 500;
             transform: translateX(400px);
             transition: transform 0.3s ease;
         }
@@ -337,32 +375,82 @@
         }
 
         .notification.success {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-color: #28a745;
+            color: #28a745;
         }
 
         .notification.error {
-            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            border-color: #ff0000;
+            color: #ff0000;
         }
 
+        /* ローディング */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.1rem;
+            color: #666666;
+            grid-column: 1 / -1;
+        }
+
+        /* レスポンシブ */
         @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
             .header h1 {
                 font-size: 2rem;
             }
 
-            .inventory-grid {
-                grid-template-columns: 1fr;
+            .stats {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            .controls {
+                padding: 20px;
             }
 
             .control-group {
                 flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
             }
 
-            .filter-group {
+            .btn, .filter-select {
+                width: 100%;
+                text-align: center;
+            }
+
+            .inventory-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stock-controls {
+                gap: 5px;
+            }
+
+            .stock-btn {
+                font-size: 0.75rem;
+                padding: 6px 8px;
+                min-width: 50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cut-display {
+                grid-template-columns: 1fr;
+            }
+
+            .stock-controls {
                 flex-direction: column;
             }
 
-            .cut-display {
-                grid-template-columns: 1fr;
+            .stock-btn {
+                flex: none;
+                width: 100%;
             }
         }
     </style>
@@ -683,7 +771,7 @@
                                 <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${item.current_stock - 0.5})">-0.5</button>
                                 <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${item.current_stock - 1})">-1</button>
                                 <button class="stock-btn increase" onclick="updateStock(${item.id}, ${item.current_stock + 1})">+1</button>
-                                <button class="stock-btn order" onclick="updateStock(${item.id}, ${item.current_stock + item.order_qty})">+発注数</button>
+                                <button class="stock-btn order" onclick="updateStock(${item.id}, ${item.current_stock + item.order_qty})">+${item.order_qty}個</button>
                             </div>
                         </div>
                     `
