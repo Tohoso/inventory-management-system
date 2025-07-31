@@ -703,7 +703,7 @@
                     stockDisplay = `
                         <div class="stock-info">
                             <div class="stock-display ${stockClass}">
-                                現在: ${item.current_stock}${item.unit} / 最低: ${item.min_stock}${item.unit}
+                                現在: ${item.current_stock}${item.unit}
                             </div>
                             <div class="stock-controls">
                                 <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${item.current_stock - 0.5})">-0.5</button>
@@ -846,7 +846,6 @@
 🏪 店舗: ${item.store}
 📋 仕入先: ${item.supplier}
 📊 現在在庫: ${stockInfo}
-⚠️ 最低在庫: ${item.min_stock}${item.unit}
 📝 発注数: ${item.order_qty}${item.unit}
 
 発注が必要です。
