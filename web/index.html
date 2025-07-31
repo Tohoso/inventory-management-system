@@ -58,7 +58,7 @@
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
         }
 
@@ -70,12 +70,12 @@
             font-size: 2.5em;
             font-weight: bold;
             color: #4facfe;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .stat-label {
             color: #666;
-            font-size: 0.9em;
+            font-size: 1.1em;
         }
 
         .controls {
@@ -87,23 +87,23 @@
         .control-group {
             display: flex;
             gap: 15px;
-            flex-wrap: wrap;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .btn {
             padding: 12px 24px;
             border: none;
-            border-radius: 25px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 1em;
             font-weight: 600;
-            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s ease;
         }
 
         .btn-primary {
@@ -116,29 +116,40 @@
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
-            color: white;
+        .btn-secondary {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(168, 237, 234, 0.4);
         }
 
         .btn-warning {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(252, 182, 159, 0.4);
         }
 
         .filter-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
         .filter-select {
-            padding: 8px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 20px;
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1em;
             background: white;
-            font-size: 14px;
-            min-width: 120px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
         }
 
         .filter-select:focus {
@@ -147,39 +158,44 @@
         }
 
         .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 20px;
             padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
         }
 
         .inventory-item {
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
             border-left: 5px solid #4facfe;
         }
 
         .inventory-item:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
         .inventory-item.low-stock {
             border-left-color: #ff6b6b;
-            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
         }
 
         .inventory-item.out-of-stock {
-            border-left-color: #dc3545;
-            background: linear-gradient(135deg, #ffe6e6 0%, #ffffff 100%);
+            border-left-color: #ff4757;
+            background: linear-gradient(135deg, #ffe0e0 0%, #ffb3b3 100%);
+        }
+
+        .inventory-item.cut-item {
+            border-left-color: #3742fa;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
         }
 
         .item-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 15px;
         }
@@ -192,146 +208,144 @@
         }
 
         .item-meta {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .meta-tag {
-            background: #f0f0f0;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            color: #666;
-        }
-
-        .meta-tag.store {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .meta-tag.supplier {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-
-        .meta-tag.category {
-            background: #e8f5e8;
-            color: #388e3c;
-        }
-
-        .stock-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stock-current, .stock-min {
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px;
-            background: #f8f9fa;
-        }
-
-        .stock-current.low {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .stock-current.out {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .stock-number {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .stock-label {
             font-size: 0.9em;
             color: #666;
         }
 
-        .cut-info {
-            background: #e8f4fd;
-            padding: 10px;
-            border-radius: 8px;
+        .stock-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
             margin-bottom: 15px;
-            border-left: 3px solid #4facfe;
+        }
+
+        .stock-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .stock-display.low {
+            color: #ff6b6b;
+        }
+
+        .stock-display.out {
+            color: #ff4757;
+        }
+
+        .cut-info {
+            background: #e6f3ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #3742fa;
         }
 
         .cut-display {
-            font-weight: bold;
-            color: #1976d2;
-            margin-bottom: 8px;
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
         }
 
-        .cut-controls {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-            flex-wrap: wrap;
+        .cut-field {
+            flex: 1;
+        }
+
+        .cut-field label {
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
         }
 
         .cut-input {
-            width: 60px;
-            padding: 4px 8px;
+            width: 100%;
+            padding: 8px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 12px;
+            border-radius: 5px;
+            font-size: 1em;
         }
 
-        .item-controls {
+        .stock-controls {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            margin-bottom: 15px;
         }
 
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 12px;
-            border-radius: 20px;
+        .stock-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 60px;
         }
 
-        .btn-xs {
-            padding: 4px 8px;
-            font-size: 10px;
-            border-radius: 12px;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #4facfe;
-            color: #4facfe;
-        }
-
-        .btn-outline:hover {
-            background: #4facfe;
+        .stock-btn.decrease {
+            background: #ff6b6b;
             color: white;
         }
 
-        .btn-cut {
-            background: transparent;
-            border: 1px solid #ff9800;
-            color: #ff9800;
+        .stock-btn.increase {
+            background: #51cf66;
+            color: white;
         }
 
-        .btn-cut:hover {
-            background: #ff9800;
+        .stock-btn.order {
+            background: #4c6ef5;
             color: white;
+        }
+
+        .stock-btn.update {
+            background: #3742fa;
+            color: white;
+        }
+
+        .stock-btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .order-notification {
+            margin-top: 15px;
+        }
+
+        .notification-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+            color: #666;
         }
 
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px 25px;
-            border-radius: 10px;
+            padding: 15px 20px;
+            border-radius: 8px;
             color: white;
             font-weight: 600;
             z-index: 1000;
@@ -344,57 +358,20 @@
         }
 
         .notification.success {
-            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            background: #51cf66;
         }
 
         .notification.error {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-
-        .loading::after {
-            content: '';
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #4facfe;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .notes {
-            margin-top: 10px;
-            padding: 8px;
-            background: #fff3cd;
-            border-radius: 5px;
-            font-size: 0.9em;
-            color: #856404;
-        }
-
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px;
-            border-left: 5px solid #dc3545;
+            background: #ff6b6b;
         }
 
         @media (max-width: 768px) {
             .inventory-grid {
                 grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            
+            .controls {
                 padding: 15px;
             }
             
@@ -421,7 +398,7 @@
             <p>Supabase版 - リアルタイム在庫管理（カット数対応）</p>
         </div>
 
-        <div class="stats" id="stats">
+        <div class="stats">
             <div class="stat-card">
                 <div class="stat-number" id="totalItems">-</div>
                 <div class="stat-label">総アイテム数</div>
@@ -445,10 +422,10 @@
                 <button class="btn btn-primary" onclick="loadInventory()">
                     🔄 データ更新
                 </button>
-                <button class="btn btn-success" onclick="testChatWorkNotification()">
+                <button class="btn btn-secondary" onclick="testChatWorkNotification()">
                     🧪 ChatWorkテスト
                 </button>
-                <a href="https://yyoixwdljeoxtieeazfo.supabase.co" target="_blank" class="btn btn-warning">
+                <a href="#" target="_blank" class="btn btn-warning" id="supabaseLink">
                     ⚙️ Supabase管理画面
                 </a>
             </div>
@@ -480,12 +457,34 @@
     </div>
 
     <script>
-        // Supabase設定
-        const SUPABASE_URL = 'https://yyoixwdljeoxtieeazfo.supabase.co'
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
+        // 環境変数から設定を取得（Vercel環境変数対応）
+        const SUPABASE_URL = window.location.hostname === 'localhost' 
+            ? 'https://yyoixwdljeoxtieeazfo.supabase.co'
+            : (typeof process !== 'undefined' && process.env.SUPABASE_URL) || 'https://yyoixwdljeoxtieeazfo.supabase.co'
+        
+        const SUPABASE_ANON_KEY = window.location.hostname === 'localhost'
+            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
+            : (typeof process !== 'undefined' && process.env.SUPABASE_ANON_KEY) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
+
+        const CHATWORK_API_TOKEN = window.location.hostname === 'localhost'
+            ? '5f149c4cd0bf7044e532b70d574ba655'
+            : (typeof process !== 'undefined' && process.env.CHATWORK_API_TOKEN) || '5f149c4cd0bf7044e532b70d574ba655'
+
+        const CHATWORK_ROOM_ID = window.location.hostname === 'localhost'
+            ? '405830596'
+            : (typeof process !== 'undefined' && process.env.CHATWORK_ROOM_ID) || '405830596'
 
         let inventoryData = []
         let filteredData = []
+
+        // 初期化時にSupabaseリンクを設定
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('supabaseLink').href = SUPABASE_URL
+            console.log('Page loaded, initializing...')
+            setTimeout(() => {
+                loadInventory()
+            }, 1000)
+        })
 
         // Supabase REST API呼び出し関数（エラーハンドリング強化）
         async function supabaseRequest(endpoint, options = {}) {
@@ -498,156 +497,68 @@
                     'Content-Type': 'application/json'
                 }
             }
-            
+
+            const finalOptions = {
+                ...defaultOptions,
+                ...options,
+                headers: {
+                    ...defaultOptions.headers,
+                    ...options.headers
+                }
+            }
+
+            console.log('Supabase Request:', url, finalOptions)
+
             try {
-                console.log('Making request to:', url)
-                const response = await fetch(url, { ...defaultOptions, ...options })
-                
-                console.log('Response status:', response.status)
+                const response = await fetch(url, finalOptions)
+                console.log('Supabase Response Status:', response.status)
                 
                 if (!response.ok) {
                     const errorText = await response.text()
-                    console.error('API Error:', errorText)
+                    console.error('Supabase Error Response:', errorText)
                     throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
                 }
                 
                 const data = await response.json()
-                console.log('Data received:', data)
+                console.log('Supabase Response Data:', data)
                 return data
             } catch (error) {
-                console.error('Supabase request failed:', error)
-                showError(`API接続エラー: ${error.message}`)
+                console.error('Supabase Request Error:', error)
                 throw error
-            }
-        }
-
-        // エラー表示関数
-        function showError(message) {
-            const grid = document.getElementById('inventoryGrid')
-            grid.innerHTML = `
-                <div class="error-message">
-                    <h3>⚠️ エラーが発生しました</h3>
-                    <p>${message}</p>
-                    <button class="btn btn-primary" onclick="loadInventory()" style="margin-top: 10px;">
-                        🔄 再試行
-                    </button>
-                </div>
-            `
-        }
-
-        // カット数解析関数
-        function parseCutInfo(notes) {
-            if (!notes) return null
-            
-            // "○本＋カット○" または "○本+カット○" の形式を解析
-            const cutMatch = notes.match(/(\d+(?:\.\d+)?)本[＋+]カット(\d+(?:\.\d+)?)/);
-            if (cutMatch) {
-                return {
-                    whole: parseFloat(cutMatch[1]),
-                    cut: parseFloat(cutMatch[2])
-                }
-            }
-            
-            return null
-        }
-
-        // カット数更新関数
-        async function updateCutInfo(itemId, whole, cut) {
-            try {
-                const notes = `${whole}本＋カット${cut}`
-                
-                await supabaseRequest(`/inventory_items?id=eq.${itemId}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify({ notes: notes })
-                })
-
-                const itemIndex = inventoryData.findIndex(item => item.id === itemId)
-                if (itemIndex !== -1) {
-                    inventoryData[itemIndex].notes = notes
-                }
-                
-                filterInventory()
-                updateStats()
-                showNotification('カット数を更新しました', 'success')
-            } catch (error) {
-                console.error('Error updating cut info:', error)
-                showNotification('カット数更新中にエラーが発生しました', 'error')
-            }
-        }
-
-        // ChatWork通知関数（直接API呼び出し）
-        async function sendChatWorkNotification(item) {
-            try {
-                const cutInfo = parseCutInfo(item.notes)
-                let stockDisplay = `${item.current_stock}${item.unit}`
-                
-                if (cutInfo) {
-                    stockDisplay = `${cutInfo.whole}本＋カット${cutInfo.cut}`
-                }
-
-                const message = `🚨 在庫アラート
-
-商品名: ${item.name}
-現在の在庫: ${stockDisplay}
-最低在庫: ${item.min_stock}${item.unit}
-推奨発注数: ${item.order_qty}${item.unit}
-仕入先: ${item.supplier}
-店舗: ${item.store}
-
-発注をお願いします。
-通知時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
-
-                const response = await fetch('https://api.chatwork.com/v2/rooms/405830596/messages', {
-                    method: 'POST',
-                    headers: {
-                        'X-ChatWorkToken': '5f149c4cd0bf7044e532b70d574ba655',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({ body: message })
-                })
-
-                if (response.ok) {
-                    showNotification(`${item.name}の発注通知をChatWorkに送信しました`, 'success')
-                } else {
-                    const errorText = await response.text()
-                    console.error('ChatWork API error:', errorText)
-                    showNotification('ChatWork通知の送信に失敗しました', 'error')
-                }
-            } catch (error) {
-                console.error('Error sending ChatWork notification:', error)
-                showNotification('ChatWork通知の送信中にエラーが発生しました', 'error')
             }
         }
 
         // 在庫データ読み込み（エラーハンドリング強化）
         async function loadInventory() {
+            console.log('Loading inventory data...')
+            
             try {
-                console.log('Loading inventory data...')
-                showNotification('データを更新中...', 'success')
+                document.getElementById('inventoryGrid').innerHTML = '<div class="loading">データを読み込み中...</div>'
                 
-                // ローディング表示
-                const grid = document.getElementById('inventoryGrid')
-                grid.innerHTML = '<div class="loading">データを読み込み中...</div>'
+                const data = await supabaseRequest('/inventory_items?select=*&order=name')
+                console.log('Loaded inventory data:', data)
                 
-                const data = await supabaseRequest('/inventory_items?select=*&order=store.asc,supplier.asc,name.asc')
-                
-                if (!data || data.length === 0) {
-                    throw new Error('データが見つかりません')
+                if (Array.isArray(data)) {
+                    inventoryData = data
+                    filteredData = [...inventoryData]
+                    
+                    updateStats()
+                    updateFilters()
+                    renderInventory()
+                    
+                    showNotification(`${inventoryData.length}件のアイテムを読み込みました`, 'success')
+                } else {
+                    throw new Error('Invalid data format received')
                 }
-                
-                inventoryData = data
-                filteredData = [...inventoryData]
-                
-                console.log('Inventory data loaded:', inventoryData.length, 'items')
-                
-                updateFilters()
-                renderInventory()
-                updateStats()
-                
-                showNotification(`データを更新しました (${inventoryData.length}件)`, 'success')
             } catch (error) {
                 console.error('Error loading inventory:', error)
-                showError(`データの読み込み中にエラーが発生しました: ${error.message}`)
+                document.getElementById('inventoryGrid').innerHTML = `
+                    <div class="loading">
+                        データの読み込みに失敗しました<br>
+                        エラー: ${error.message}<br>
+                        <button class="btn btn-primary" onclick="loadInventory()" style="margin-top: 10px;">再試行</button>
+                    </div>
+                `
                 showNotification('データの読み込みに失敗しました', 'error')
             }
         }
@@ -707,20 +618,37 @@
                 const categoryMatch = !categoryFilter || item.category === categoryFilter
                 
                 let statusMatch = true
-                if (statusFilter) {
-                    if (statusFilter === 'out') {
-                        statusMatch = item.current_stock <= 0
-                    } else if (statusFilter === 'low') {
-                        statusMatch = item.current_stock > 0 && item.current_stock <= item.min_stock
-                    } else if (statusFilter === 'normal') {
-                        statusMatch = item.current_stock > item.min_stock
-                    }
+                if (statusFilter === 'low') {
+                    statusMatch = item.current_stock <= item.min_stock && item.current_stock > 0
+                } else if (statusFilter === 'out') {
+                    statusMatch = item.current_stock <= 0
+                } else if (statusFilter === 'normal') {
+                    statusMatch = item.current_stock > item.min_stock
                 }
 
                 return storeMatch && supplierMatch && categoryMatch && statusMatch
             })
 
             renderInventory()
+        }
+
+        // カット数情報の解析
+        function parseCutInfo(notes) {
+            if (!notes) return null
+            
+            const cutMatch = notes.match(/(\d+(?:\.\d+)?)本\+カット(\d+(?:\.\d+)?)/)
+            if (cutMatch) {
+                return {
+                    bottles: parseFloat(cutMatch[1]),
+                    cuts: parseFloat(cutMatch[2])
+                }
+            }
+            return null
+        }
+
+        // カット数情報の生成
+        function generateCutNotes(bottles, cuts) {
+            return `${bottles}本+カット${cuts}`
         }
 
         // 在庫表示
@@ -732,120 +660,132 @@
                 return
             }
 
-            grid.innerHTML = filteredData.map(item => createInventoryItem(item)).join('')
-        }
+            grid.innerHTML = filteredData.map(item => {
+                const isLowStock = item.current_stock <= item.min_stock && item.current_stock > 0
+                const isOutOfStock = item.current_stock <= 0
+                const cutInfo = parseCutInfo(item.notes)
+                
+                let statusClass = ''
+                if (cutInfo) {
+                    statusClass = 'cut-item'
+                } else if (isOutOfStock) {
+                    statusClass = 'out-of-stock'
+                } else if (isLowStock) {
+                    statusClass = 'low-stock'
+                }
 
-        // 在庫アイテム作成
-        function createInventoryItem(item) {
-            const isOutOfStock = item.current_stock <= 0
-            const isLowStock = item.current_stock > 0 && item.current_stock <= item.min_stock
-            
-            let statusClass = ''
-            let stockClass = ''
-            
-            if (isOutOfStock) {
-                statusClass = 'out-of-stock'
-                stockClass = 'out'
-            } else if (isLowStock) {
-                statusClass = 'low-stock'
-                stockClass = 'low'
-            }
-
-            const cutInfo = parseCutInfo(item.notes)
-            let cutControlsHtml = ''
-            let stockDisplay = `${item.current_stock}${item.unit || '個'}`
-            
-            if (cutInfo) {
-                stockDisplay = `${cutInfo.whole}本＋カット${cutInfo.cut}`
-                cutControlsHtml = `
-                    <div class="cut-info">
-                        <div class="cut-display">📦 ${stockDisplay}</div>
-                        <div class="cut-controls">
-                            <span style="font-size: 12px;">本:</span>
-                            <input type="number" class="cut-input" value="${cutInfo.whole}" step="0.5" min="0" id="whole_${item.id}">
-                            <span style="font-size: 12px;">カット:</span>
-                            <input type="number" class="cut-input" value="${cutInfo.cut}" step="1" min="0" id="cut_${item.id}">
-                            <button class="btn btn-cut btn-xs" onclick="updateCutFromInputs(${item.id})">更新</button>
-                            <button class="btn btn-cut btn-xs" onclick="updateCutInfo(${item.id}, ${cutInfo.whole}, ${cutInfo.cut + 1})">カット+1</button>
-                            <button class="btn btn-cut btn-xs" onclick="updateCutInfo(${item.id}, ${cutInfo.whole}, Math.max(0, ${cutInfo.cut - 1}))">カット-1</button>
+                let stockDisplay = ''
+                if (cutInfo) {
+                    stockDisplay = `
+                        <div class="cut-info">
+                            <div class="cut-display">
+                                <div class="cut-field">
+                                    <label>本数</label>
+                                    <input type="number" class="cut-input" id="bottles-${item.id}" value="${cutInfo.bottles}" step="0.5" min="0">
+                                </div>
+                                <div class="cut-field">
+                                    <label>カット数</label>
+                                    <input type="number" class="cut-input" id="cuts-${item.id}" value="${cutInfo.cuts}" step="1" min="0">
+                                </div>
+                            </div>
+                            <div class="stock-controls">
+                                <button class="stock-btn decrease" onclick="adjustCutStock(${item.id}, 'bottles', -1)">本-1</button>
+                                <button class="stock-btn increase" onclick="adjustCutStock(${item.id}, 'bottles', 1)">本+1</button>
+                                <button class="stock-btn decrease" onclick="adjustCutStock(${item.id}, 'cuts', -1)">カット-1</button>
+                                <button class="stock-btn increase" onclick="adjustCutStock(${item.id}, 'cuts', 1)">カット+1</button>
+                                <button class="stock-btn order" onclick="adjustCutStock(${item.id}, 'bottles', ${item.order_qty})">+${item.order_qty}本</button>
+                                <button class="stock-btn update" onclick="updateCutStock(${item.id})">更新</button>
+                            </div>
                         </div>
+                    `
+                } else {
+                    const stockClass = isOutOfStock ? 'out' : (isLowStock ? 'low' : '')
+                    stockDisplay = `
+                        <div class="stock-info">
+                            <div class="stock-display ${stockClass}">
+                                現在: ${item.current_stock}${item.unit} / 最低: ${item.min_stock}${item.unit}
+                            </div>
+                            <div class="stock-controls">
+                                <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${item.current_stock - 0.5})">-0.5</button>
+                                <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${item.current_stock - 1})">-1</button>
+                                <button class="stock-btn increase" onclick="updateStock(${item.id}, ${item.current_stock + 1})">+1</button>
+                                <button class="stock-btn order" onclick="updateStock(${item.id}, ${item.current_stock + item.order_qty})">+${item.order_qty}</button>
+                            </div>
+                        </div>
+                    `
+                }
+
+                const needsOrder = item.current_stock <= item.min_stock
+                const orderButton = needsOrder ? `
+                    <div class="order-notification">
+                        <button class="notification-btn" onclick="sendOrderNotification(${item.id})">
+                            📱 発注通知
+                        </button>
+                    </div>
+                ` : ''
+
+                return `
+                    <div class="inventory-item ${statusClass}">
+                        <div class="item-header">
+                            <div>
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-meta">
+                                    🏪 ${item.store} | 📦 ${item.supplier} | 📂 ${item.category || '未分類'}
+                                </div>
+                            </div>
+                        </div>
+                        ${stockDisplay}
+                        ${orderButton}
                     </div>
                 `
-            }
-
-            const notesHtml = item.notes && !cutInfo ? `<div class="notes">📝 ${item.notes}</div>` : ''
-
-            return `
-                <div class="inventory-item ${statusClass}">
-                    <div class="item-header">
-                        <div class="item-name">${item.name}</div>
-                    </div>
-                    
-                    <div class="item-meta">
-                        <span class="meta-tag store">🏪 ${item.store}</span>
-                        <span class="meta-tag supplier">📦 ${item.supplier}</span>
-                        <span class="meta-tag category">🏷️ ${item.category || '未分類'}</span>
-                    </div>
-
-                    ${cutControlsHtml}
-
-                    <div class="stock-info">
-                        <div class="stock-current ${stockClass}">
-                            <div class="stock-number">${cutInfo ? stockDisplay : stockDisplay}</div>
-                            <div class="stock-label">現在の在庫</div>
-                        </div>
-                        <div class="stock-min">
-                            <div class="stock-number">${item.min_stock}${item.unit || '個'}</div>
-                            <div class="stock-label">最低在庫</div>
-                        </div>
-                    </div>
-
-                    ${notesHtml}
-
-                    <div class="item-controls">
-                        ${!cutInfo ? `
-                            <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock - 0.5})">
-                                -0.5
-                            </button>
-                            <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock - 1})">
-                                -1
-                            </button>
-                            <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock + 1})">
-                                +1
-                            </button>
-                            <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock + ${item.order_qty || 1}})">
-                                +${item.order_qty || 1}
-                            </button>
-                        ` : `
-                            <button class="btn btn-outline btn-sm" onclick="updateCutInfo(${item.id}, Math.max(0, ${cutInfo.whole - 1}), ${cutInfo.cut})">
-                                本-1
-                            </button>
-                            <button class="btn btn-outline btn-sm" onclick="updateCutInfo(${item.id}, ${cutInfo.whole + 1}, ${cutInfo.cut})">
-                                本+1
-                            </button>
-                            <button class="btn btn-outline btn-sm" onclick="updateCutInfo(${item.id}, ${cutInfo.whole + (item.order_qty || 1)}, ${cutInfo.cut})">
-                                +${item.order_qty || 1}本
-                            </button>
-                        `}
-                        ${(isOutOfStock || isLowStock) ? `
-                            <button class="btn btn-warning btn-sm" onclick="sendOrderNotification(${item.id})">
-                                📱 発注通知
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `
+            }).join('')
         }
 
-        // 入力フィールドからカット数を更新
-        function updateCutFromInputs(itemId) {
-            const wholeInput = document.getElementById(`whole_${itemId}`)
-            const cutInput = document.getElementById(`cut_${itemId}`)
+        // カット数調整
+        function adjustCutStock(itemId, type, amount) {
+            const input = document.getElementById(`${type}-${itemId}`)
+            const currentValue = parseFloat(input.value) || 0
+            const newValue = Math.max(0, currentValue + amount)
+            input.value = newValue
+        }
+
+        // カット数更新
+        async function updateCutStock(itemId) {
+            const bottlesInput = document.getElementById(`bottles-${itemId}`)
+            const cutsInput = document.getElementById(`cuts-${itemId}`)
             
-            const whole = parseFloat(wholeInput.value) || 0
-            const cut = parseFloat(cutInput.value) || 0
+            const bottles = parseFloat(bottlesInput.value) || 0
+            const cuts = parseFloat(cutsInput.value) || 0
             
-            updateCutInfo(itemId, whole, cut)
+            if (bottles < 0 || cuts < 0) {
+                showNotification('本数・カット数は0以上である必要があります', 'error')
+                return
+            }
+
+            try {
+                const notes = generateCutNotes(bottles, cuts)
+                
+                await supabaseRequest(`/inventory_items?id=eq.${itemId}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ 
+                        current_stock: bottles,
+                        notes: notes
+                    })
+                })
+
+                const itemIndex = inventoryData.findIndex(item => item.id === itemId)
+                if (itemIndex !== -1) {
+                    inventoryData[itemIndex].current_stock = bottles
+                    inventoryData[itemIndex].notes = notes
+                }
+                
+                filterInventory()
+                updateStats()
+                showNotification('カット数を更新しました', 'success')
+            } catch (error) {
+                console.error('Error updating cut stock:', error)
+                showNotification('カット数更新中にエラーが発生しました', 'error')
+            }
         }
 
         // 在庫更新
@@ -888,6 +828,53 @@
             }
         }
 
+        // ChatWork通知送信
+        async function sendChatWorkNotification(item) {
+            try {
+                const cutInfo = parseCutInfo(item.notes)
+                let stockInfo = ''
+                
+                if (cutInfo) {
+                    stockInfo = `${cutInfo.bottles}本+カット${cutInfo.cuts}`
+                } else {
+                    stockInfo = `${item.current_stock}${item.unit}`
+                }
+
+                const message = `🚨 在庫不足通知
+
+📦 商品名: ${item.name}
+🏪 店舗: ${item.store}
+📋 仕入先: ${item.supplier}
+📊 現在在庫: ${stockInfo}
+⚠️ 最低在庫: ${item.min_stock}${item.unit}
+📝 発注数: ${item.order_qty}${item.unit}
+
+発注が必要です。
+
+送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
+
+                const response = await fetch(`https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`, {
+                    method: 'POST',
+                    headers: {
+                        'X-ChatWorkToken': CHATWORK_API_TOKEN,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ body: message })
+                })
+
+                if (response.ok) {
+                    showNotification('ChatWork通知を送信しました', 'success')
+                } else {
+                    const errorText = await response.text()
+                    console.error('ChatWork API Error:', errorText)
+                    showNotification('ChatWork通知の送信に失敗しました', 'error')
+                }
+            } catch (error) {
+                console.error('Error sending ChatWork notification:', error)
+                showNotification('ChatWork通知の送信中にエラーが発生しました', 'error')
+            }
+        }
+
         // ChatWorkテスト通知
         async function testChatWorkNotification() {
             try {
@@ -898,10 +885,10 @@
 
 送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
 
-                const response = await fetch('https://api.chatwork.com/v2/rooms/405830596/messages', {
+                const response = await fetch(`https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`, {
                     method: 'POST',
                     headers: {
-                        'X-ChatWorkToken': '5f149c4cd0bf7044e532b70d574ba655',
+                        'X-ChatWorkToken': CHATWORK_API_TOKEN,
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     body: new URLSearchParams({ body: testMessage })
@@ -910,6 +897,8 @@
                 if (response.ok) {
                     showNotification('ChatWorkテスト通知を送信しました', 'success')
                 } else {
+                    const errorText = await response.text()
+                    console.error('ChatWork API Error:', errorText)
                     showNotification('ChatWorkテスト通知の送信に失敗しました', 'error')
                 }
             } catch (error) {
@@ -931,16 +920,6 @@
                 setTimeout(() => document.body.removeChild(notification), 300)
             }, 3000)
         }
-
-        // 初期化（エラーハンドリング強化）
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded, initializing...')
-            
-            // 接続テスト
-            setTimeout(() => {
-                loadInventory()
-            }, 1000)
-        })
     </script>
 </body>
 </html>
