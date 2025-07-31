@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在庫管理システム - Supabase版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .controls {
+            padding: 30px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 8px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .inventory-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 5px solid #4facfe;
+        }
+
+        .inventory-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .inventory-item.low-stock {
+            border-left-color: #ff6b6b;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+        }
+
+        .inventory-item.out-of-stock {
+            border-left-color: #dc3545;
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffffff 100%);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .item-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            background: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .meta-tag.store {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .meta-tag.supplier {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .meta-tag.category {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+
+        .stock-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stock-current, .stock-min {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .stock-current.low {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .stock-current.out {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .stock-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stock-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .item-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 12px;
+            border-radius: 20px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #4facfe;
+            color: #4facfe;
+        }
+
+        .btn-outline:hover {
+            background: #4facfe;
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notes {
+            margin-top: 10px;
+            padding: 8px;
+            background: #fff3cd;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .inventory-grid {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏪 在庫管理システム</h1>
+            <p>Supabase版 - リアルタイム在庫管理</p>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">-</div>
+                <div class="stat-label">総アイテム数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="lowStockItems">-</div>
+                <div class="stat-label">在庫不足</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalStores">-</div>
+                <div class="stat-label">店舗数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSuppliers">-</div>
+                <div class="stat-label">仕入先数</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <button class="btn btn-primary" onclick="loadInventory()">
+                    🔄 データ更新
+                </button>
+                <button class="btn btn-success" onclick="testChatWorkNotification()">
+                    🧪 ChatWorkテスト
+                </button>
+                <a href="https://yyoixwdljeoxtieeazfo.supabase.co" target="_blank" class="btn btn-warning">
+                    ⚙️ Supabase管理画面
+                </a>
+            </div>
+            
+            <div class="control-group">
+                <div class="filter-group">
+                    <select class="filter-select" id="storeFilter" onchange="filterInventory()">
+                        <option value="">全店舗</option>
+                    </select>
+                    <select class="filter-select" id="supplierFilter" onchange="filterInventory()">
+                        <option value="">全仕入先</option>
+                    </select>
+                    <select class="filter-select" id="categoryFilter" onchange="filterInventory()">
+                        <option value="">全カテゴリ</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter" onchange="filterInventory()">
+                        <option value="">全ステータス</option>
+                        <option value="low">在庫不足</option>
+                        <option value="out">在庫切れ</option>
+                        <option value="normal">正常</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="inventory-grid" id="inventoryGrid">
+            <div class="loading">データを読み込み中...</div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase設定
+        const SUPABASE_URL = 'https://yyoixwdljeoxtieeazfo.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
+
+        let inventoryData = []
+        let filteredData = []
+
+        // Supabase REST API呼び出し関数
+        async function supabaseRequest(endpoint, options = {}) {
+            const url = `${SUPABASE_URL}/rest/v1${endpoint}`
+            
+            const defaultOptions = {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+            
+            try {
+                const response = await fetch(url, { ...defaultOptions, ...options })
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                
+                return await response.json()
+            } catch (error) {
+                console.error('Supabase request failed:', error)
+                throw error
+            }
+        }
+
+        // ChatWork通知関数（直接API呼び出し）
+        async function sendChatWorkNotification(item) {
+            try {
+                const message = `🚨 在庫アラート
+
+商品名: ${item.name}
+現在の在庫: ${item.current_stock}${item.unit}
+最低在庫: ${item.min_stock}${item.unit}
+推奨発注数: ${item.order_qty}${item.unit}
+仕入先: ${item.supplier}
+店舗: ${item.store}
+
+発注をお願いします。
+通知時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
+
+                const response = await fetch('https://api.chatwork.com/v2/rooms/405830596/messages', {
+                    method: 'POST',
+                    headers: {
+                        'X-ChatWorkToken': '5f149c4cd0bf7044e532b70d574ba655',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ body: message })
+                })
+
+                if (response.ok) {
+                    showNotification(`${item.name}の発注通知をChatWorkに送信しました`, 'success')
+                } else {
+                    const errorText = await response.text()
+                    console.error('ChatWork API error:', errorText)
+                    showNotification('ChatWork通知の送信に失敗しました', 'error')
+                }
+            } catch (error) {
+                console.error('Error sending ChatWork notification:', error)
+                showNotification('ChatWork通知の送信中にエラーが発生しました', 'error')
+            }
+        }
+
+        // 在庫データ読み込み
+        async function loadInventory() {
+            try {
+                showNotification('データを更新中...', 'success')
+                
+                const data = await supabaseRequest('/inventory_items?select=*&order=store.asc,supplier.asc,name.asc')
+                inventoryData = data
+                filteredData = [...inventoryData]
+                
+                updateFilters()
+                renderInventory()
+                updateStats()
+                
+                showNotification('データを更新しました', 'success')
+            } catch (error) {
+                console.error('Error loading inventory:', error)
+                showNotification('データの読み込み中にエラーが発生しました', 'error')
+            }
+        }
+
+        // 統計情報更新
+        function updateStats() {
+            const totalItems = inventoryData.length
+            const lowStockItems = inventoryData.filter(item => item.current_stock <= item.min_stock).length
+            const stores = [...new Set(inventoryData.map(item => item.store))]
+            const suppliers = [...new Set(inventoryData.map(item => item.supplier))]
+
+            document.getElementById('totalItems').textContent = totalItems
+            document.getElementById('lowStockItems').textContent = lowStockItems
+            document.getElementById('totalStores').textContent = stores.length
+            document.getElementById('totalSuppliers').textContent = suppliers.length
+        }
+
+        // フィルター更新
+        function updateFilters() {
+            const stores = [...new Set(inventoryData.map(item => item.store))].sort()
+            const suppliers = [...new Set(inventoryData.map(item => item.supplier))].sort()
+            const categories = [...new Set(inventoryData.map(item => item.category))].sort()
+
+            updateSelectOptions('storeFilter', stores)
+            updateSelectOptions('supplierFilter', suppliers)
+            updateSelectOptions('categoryFilter', categories)
+        }
+
+        function updateSelectOptions(selectId, options) {
+            const select = document.getElementById(selectId)
+            const currentValue = select.value
+            
+            while (select.children.length > 1) {
+                select.removeChild(select.lastChild)
+            }
+            
+            options.forEach(option => {
+                const optionElement = document.createElement('option')
+                optionElement.value = option
+                optionElement.textContent = option
+                select.appendChild(optionElement)
+            })
+            
+            select.value = currentValue
+        }
+
+        // フィルタリング
+        function filterInventory() {
+            const storeFilter = document.getElementById('storeFilter').value
+            const supplierFilter = document.getElementById('supplierFilter').value
+            const categoryFilter = document.getElementById('categoryFilter').value
+            const statusFilter = document.getElementById('statusFilter').value
+
+            filteredData = inventoryData.filter(item => {
+                const storeMatch = !storeFilter || item.store === storeFilter
+                const supplierMatch = !supplierFilter || item.supplier === supplierFilter
+                const categoryMatch = !categoryFilter || item.category === categoryFilter
+                
+                let statusMatch = true
+                if (statusFilter) {
+                    if (statusFilter === 'out') {
+                        statusMatch = item.current_stock <= 0
+                    } else if (statusFilter === 'low') {
+                        statusMatch = item.current_stock > 0 && item.current_stock <= item.min_stock
+                    } else if (statusFilter === 'normal') {
+                        statusMatch = item.current_stock > item.min_stock
+                    }
+                }
+
+                return storeMatch && supplierMatch && categoryMatch && statusMatch
+            })
+
+            renderInventory()
+        }
+
+        // 在庫表示
+        function renderInventory() {
+            const grid = document.getElementById('inventoryGrid')
+            
+            if (filteredData.length === 0) {
+                grid.innerHTML = '<div class="loading">該当するアイテムがありません</div>'
+                return
+            }
+
+            grid.innerHTML = filteredData.map(item => createInventoryItem(item)).join('')
+        }
+
+        // 在庫アイテム作成
+        function createInventoryItem(item) {
+            const isOutOfStock = item.current_stock <= 0
+            const isLowStock = item.current_stock > 0 && item.current_stock <= item.min_stock
+            
+            let statusClass = ''
+            let stockClass = ''
+            
+            if (isOutOfStock) {
+                statusClass = 'out-of-stock'
+                stockClass = 'out'
+            } else if (isLowStock) {
+                statusClass = 'low-stock'
+                stockClass = 'low'
+            }
+
+            const notesHtml = item.notes ? `<div class="notes">📝 ${item.notes}</div>` : ''
+
+            return `
+                <div class="inventory-item ${statusClass}">
+                    <div class="item-header">
+                        <div class="item-name">${item.name}</div>
+                    </div>
+                    
+                    <div class="item-meta">
+                        <span class="meta-tag store">🏪 ${item.store}</span>
+                        <span class="meta-tag supplier">📦 ${item.supplier}</span>
+                        <span class="meta-tag category">🏷️ ${item.category}</span>
+                    </div>
+
+                    <div class="stock-info">
+                        <div class="stock-current ${stockClass}">
+                            <div class="stock-number">${item.current_stock}${item.unit}</div>
+                            <div class="stock-label">現在の在庫</div>
+                        </div>
+                        <div class="stock-min">
+                            <div class="stock-number">${item.min_stock}${item.unit}</div>
+                            <div class="stock-label">最低在庫</div>
+                        </div>
+                    </div>
+
+                    ${notesHtml}
+
+                    <div class="item-controls">
+                        <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock - 0.5})">
+                            -0.5
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock - 1})">
+                            -1
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock + 1})">
+                            +1
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="updateStock(${item.id}, ${item.current_stock + ${item.order_qty}})">
+                            +${item.order_qty}
+                        </button>
+                        ${(isOutOfStock || isLowStock) ? `
+                            <button class="btn btn-warning btn-sm" onclick="sendOrderNotification(${item.id})">
+                                📱 発注通知
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `
+        }
+
+        // 在庫更新
+        async function updateStock(itemId, newStock) {
+            if (newStock < 0) {
+                showNotification('在庫数は0以上である必要があります', 'error')
+                return
+            }
+
+            try {
+                await supabaseRequest(`/inventory_items?id=eq.${itemId}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ current_stock: newStock })
+                })
+
+                const itemIndex = inventoryData.findIndex(item => item.id === itemId)
+                if (itemIndex !== -1) {
+                    inventoryData[itemIndex].current_stock = newStock
+                }
+                
+                filterInventory()
+                updateStats()
+                showNotification('在庫を更新しました', 'success')
+            } catch (error) {
+                console.error('Error updating stock:', error)
+                showNotification('在庫更新中にエラーが発生しました', 'error')
+            }
+        }
+
+        // 発注通知送信
+        async function sendOrderNotification(itemId) {
+            try {
+                const item = inventoryData.find(item => item.id === itemId)
+                if (item) {
+                    await sendChatWorkNotification(item)
+                }
+            } catch (error) {
+                console.error('Error sending order notification:', error)
+                showNotification('発注通知の送信に失敗しました', 'error')
+            }
+        }
+
+        // ChatWorkテスト通知
+        async function testChatWorkNotification() {
+            try {
+                const testMessage = `🧪 在庫管理システム テスト通知
+
+このメッセージは在庫管理システムからのテスト通知です。
+システムが正常に動作していることを確認しました。
+
+送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
+
+                const response = await fetch('https://api.chatwork.com/v2/rooms/405830596/messages', {
+                    method: 'POST',
+                    headers: {
+                        'X-ChatWorkToken': '5f149c4cd0bf7044e532b70d574ba655',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ body: testMessage })
+                })
+
+                if (response.ok) {
+                    showNotification('ChatWorkテスト通知を送信しました', 'success')
+                } else {
+                    showNotification('ChatWorkテスト通知の送信に失敗しました', 'error')
+                }
+            } catch (error) {
+                console.error('Error sending test notification:', error)
+                showNotification('ChatWorkテスト通知の送信中にエラーが発生しました', 'error')
+            }
+        }
+
+        // 通知表示
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div')
+            notification.className = `notification ${type}`
+            notification.textContent = message
+            document.body.appendChild(notification)
+
+            setTimeout(() => notification.classList.add('show'), 100)
+            setTimeout(() => {
+                notification.classList.remove('show')
+                setTimeout(() => document.body.removeChild(notification), 300)
+            }, 3000)
+        }
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadInventory()
+        })
+    </script>
+</body>
+</html>
+
