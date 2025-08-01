@@ -178,11 +178,6 @@
             border-width: 2px;
         }
 
-        .inventory-item.cut-item {
-            border-color: #007bff;
-            border-width: 2px;
-        }
-
         /* アイテムヘッダー */
         .item-header {
             margin-bottom: 20px;
@@ -204,7 +199,7 @@
         }
 
         /* 在庫情報 */
-        .stock-info, .cut-info {
+        .stock-info {
             margin-bottom: 20px;
         }
 
@@ -227,40 +222,6 @@
             background: #fff3e6;
             border-color: #ff6b35;
             color: #cc4400;
-        }
-
-        /* カット数表示 */
-        .cut-display {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .cut-field {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cut-field label {
-            font-size: 0.8rem;
-            color: #666666;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .cut-input {
-            background: #ffffff;
-            border: 1px solid #000000;
-            padding: 10px;
-            font-size: 1rem;
-            text-align: center;
-        }
-
-        .cut-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px #000000;
         }
 
         /* ボタンコントロール */
@@ -306,27 +267,6 @@
 
         .stock-btn.increase:hover {
             background: #28a745;
-            color: #ffffff;
-        }
-
-        .stock-btn.order {
-            border-color: #007bff;
-            color: #007bff;
-            font-weight: 500;
-        }
-
-        .stock-btn.order:hover {
-            background: #007bff;
-            color: #ffffff;
-        }
-
-        .stock-btn.update {
-            border-color: #6c757d;
-            color: #6c757d;
-        }
-
-        .stock-btn.update:hover {
-            background: #6c757d;
             color: #ffffff;
         }
 
@@ -440,10 +380,6 @@
         }
 
         @media (max-width: 480px) {
-            .cut-display {
-                grid-template-columns: 1fr;
-            }
-
             .stock-controls {
                 flex-direction: column;
             }
@@ -691,6 +627,16 @@
             renderInventory()
         }
 
+        // 単位に応じた在庫表示フォーマット
+        function formatStock(stock, unit) {
+            // 個数系の単位は整数表示
+            if (unit === '個' || unit === '箱' || unit === '袋' || unit === '枚') {
+                return Math.floor(stock);
+            }
+            // 液体・重量系は小数点表示
+            return parseFloat(stock).toString();
+        }
+
         // カット数情報の解析
         function parseCutInfo(notes) {
             if (!notes) return null
@@ -703,11 +649,6 @@
                 }
             }
             return null
-        }
-
-        // カット数情報の生成
-        function generateCutNotes(bottles, cuts) {
-            return `${bottles}本+カット${cuts}`
         }
 
         // 在庫表示
@@ -725,9 +666,7 @@
                 const cutInfo = parseCutInfo(item.notes)
                 
                 let statusClass = ''
-                if (cutInfo) {
-                    statusClass = 'cut-item'
-                } else if (isOutOfStock) {
+                if (isOutOfStock) {
                     statusClass = 'out-of-stock'
                 } else if (isLowStock) {
                     statusClass = 'low-stock'
@@ -735,28 +674,16 @@
 
                 let stockDisplay = ''
                 if (cutInfo) {
+                    // カット数対応アイテムも通常の在庫管理に統一
+                    const totalStock = cutInfo.bottles + (cutInfo.cuts * 0.1) // カット数を0.1本として計算
                     stockDisplay = `
-                        <div class="cut-info">
+                        <div class="stock-info">
                             <div class="stock-display">
-                                現在: ${cutInfo.bottles}本 + カット${cutInfo.cuts}
-                            </div>
-                            <div class="cut-display">
-                                <div class="cut-field">
-                                    <label>本数</label>
-                                    <input type="number" class="cut-input" id="bottles-${item.id}" value="${cutInfo.bottles}" step="0.5" min="0">
-                                </div>
-                                <div class="cut-field">
-                                    <label>カット数</label>
-                                    <input type="number" class="cut-input" id="cuts-${item.id}" value="${cutInfo.cuts}" step="1" min="0">
-                                </div>
+                                現在: ${formatStock(totalStock, item.unit)}${item.unit}
                             </div>
                             <div class="stock-controls">
-                                <button class="stock-btn decrease" onclick="adjustCutStock(${item.id}, 'bottles', -1)">本-1</button>
-                                <button class="stock-btn increase" onclick="adjustCutStock(${item.id}, 'bottles', 1)">本+1</button>
-                                <button class="stock-btn decrease" onclick="adjustCutStock(${item.id}, 'cuts', -1)">カット-1</button>
-                                <button class="stock-btn increase" onclick="adjustCutStock(${item.id}, 'cuts', 1)">カット+1</button>
-                                <button class="stock-btn order" onclick="adjustCutStock(${item.id}, 'bottles', ${item.order_qty})">+${item.order_qty}本</button>
-                                <button class="stock-btn update" onclick="updateCutStock(${item.id})">更新</button>
+                                <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${totalStock - 1})">-1</button>
+                                <button class="stock-btn increase" onclick="updateStock(${item.id}, ${totalStock + 1})">+1</button>
                             </div>
                         </div>
                     `
@@ -765,13 +692,11 @@
                     stockDisplay = `
                         <div class="stock-info">
                             <div class="stock-display ${stockClass}">
-                                現在: ${item.current_stock}${item.unit}
+                                現在: ${formatStock(item.current_stock, item.unit)}${item.unit}
                             </div>
                             <div class="stock-controls">
-                                <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${item.current_stock - 0.5})">-0.5</button>
                                 <button class="stock-btn decrease" onclick="updateStock(${item.id}, ${item.current_stock - 1})">-1</button>
                                 <button class="stock-btn increase" onclick="updateStock(${item.id}, ${item.current_stock + 1})">+1</button>
-                                <button class="stock-btn order" onclick="updateStock(${item.id}, ${item.current_stock + item.order_qty})">+${item.order_qty}個</button>
                             </div>
                         </div>
                     `
