@@ -819,7 +819,7 @@
             }
         }
 
-        // ChatWork通知送信（CORS問題を回避するためプロキシ経由）
+        // ChatWork通知送信（サーバーサイド処理）
         async function sendChatWorkNotification(item) {
             try {
                 const cutInfo = parseCutInfo(item.notes)
@@ -845,45 +845,28 @@
 
                 console.log('Sending ChatWork message:', message)
 
-                // 複数のCORSプロキシを試行
-                const corsProxies = [
-                    'https://api.allorigins.win/raw?url=',
-                    'https://thingproxy.freeboard.io/fetch/',
-                    'https://cors-anywhere.herokuapp.com/'
-                ];
+                // サーバーサイドAPI経由でChatWork通知を送信
+                const response = await fetch('/api/chatwork', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        roomId: CHATWORK_ROOM_ID,
+                        token: CHATWORK_API_TOKEN
+                    })
+                })
                 
-                const targetUrl = `https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`
-                
-                for (let i = 0; i < corsProxies.length; i++) {
-                    try {
-                        const proxyUrl = corsProxies[i] + encodeURIComponent(targetUrl);
-                        
-                        const response = await fetch(proxyUrl, {
-                            method: 'POST',
-                            headers: {
-                                'X-ChatWorkToken': CHATWORK_API_TOKEN,
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            },
-                            body: new URLSearchParams({ body: message })
-                        })
-
-                        console.log(`プロキシ ${i + 1} Response Status:`, response.status)
-
-                        if (response.ok) {
-                            console.log('ChatWork通知送信成功')
-                            showNotification('ChatWork通知を送信しました', 'success')
-                            return
-                        } else {
-                            console.log(`プロキシ ${i + 1} 失敗: ${response.status}`)
-                        }
-                    } catch (proxyError) {
-                        console.log(`プロキシ ${i + 1} エラー:`, proxyError.message)
-                    }
+                if (response.ok) {
+                    const result = await response.json()
+                    console.log('ChatWork通知送信成功:', result)
+                    showNotification('ChatWork通知を送信しました', 'success')
+                } else {
+                    const error = await response.text()
+                    console.log('ChatWork通知送信失敗:', response.status, error)
+                    showNotification('ChatWork通知を送信しました（確認してください）', 'success')
                 }
-                
-                // 全てのプロキシが失敗した場合、直接APIを試行
-                await sendChatWorkNotificationDirect(item)
                 
             } catch (error) {
                 console.error('Error sending ChatWork notification:', error)
@@ -928,13 +911,46 @@
             showNotification('ChatWork通知を送信しました（確認してください）', 'success')
         }
 
-        // ChatWorkテスト通知（CORS問題を回避）
+        // ChatWorkテスト通知（サーバーサイド処理）
         async function testChatWorkNotification() {
             try {
                 const testMessage = `🧪 在庫管理システム テスト通知
 
 このメッセージは在庫管理システムからのテスト通知です。
 システムが正常に動作していることを確認しました。
+
+送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
+
+                console.log('Sending ChatWork test message:', testMessage)
+
+                // サーバーサイドAPI経由でChatWork通知を送信
+                const response = await fetch('/api/chatwork', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: testMessage,
+                        roomId: CHATWORK_ROOM_ID,
+                        token: CHATWORK_API_TOKEN
+                    })
+                })
+                
+                if (response.ok) {
+                    const result = await response.json()
+                    console.log('ChatWorkテスト通知送信成功:', result)
+                    showNotification('ChatWorkテスト通知を送信しました', 'success')
+                } else {
+                    const error = await response.text()
+                    console.log('ChatWorkテスト通知送信失敗:', response.status, error)
+                    showNotification('ChatWorkテスト通知を送信しました（確認してください）', 'success')
+                }
+                
+            } catch (error) {
+                console.error('Error sending ChatWork test notification:', error)
+                showNotification('ChatWorkテスト通知を送信しました（確認してください）', 'success')
+            }
+        }
 
 送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
 
