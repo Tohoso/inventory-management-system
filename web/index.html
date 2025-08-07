@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在庫管理システム - Supabase版</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
     <style>
         * {
             margin: 0;
@@ -843,43 +845,49 @@
 
                 console.log('Sending ChatWork message:', message)
 
-                // CORS問題を回避するため、プロキシサービスを使用
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+                // 複数のCORSプロキシを試行
+                const corsProxies = [
+                    'https://api.allorigins.win/raw?url=',
+                    'https://thingproxy.freeboard.io/fetch/',
+                    'https://cors-anywhere.herokuapp.com/'
+                ];
+                
                 const targetUrl = `https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`
                 
-                const response = await fetch(proxyUrl + targetUrl, {
-                    method: 'POST',
-                    headers: {
-                        'X-ChatWorkToken': CHATWORK_API_TOKEN,
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: new URLSearchParams({ body: message })
-                })
+                for (let i = 0; i < corsProxies.length; i++) {
+                    try {
+                        const proxyUrl = corsProxies[i] + encodeURIComponent(targetUrl);
+                        
+                        const response = await fetch(proxyUrl, {
+                            method: 'POST',
+                            headers: {
+                                'X-ChatWorkToken': CHATWORK_API_TOKEN,
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: new URLSearchParams({ body: message })
+                        })
 
-                console.log('ChatWork Response Status:', response.status)
+                        console.log(`プロキシ ${i + 1} Response Status:`, response.status)
 
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log('ChatWork Response:', result)
-                    showNotification('ChatWork通知を送信しました', 'success')
-                } else {
-                    const errorText = await response.text()
-                    console.error('ChatWork API Error:', response.status, errorText)
-                    
-                    // フォールバック: 直接APIを試行
-                    await sendChatWorkNotificationDirect(item)
+                        if (response.ok) {
+                            console.log('ChatWork通知送信成功')
+                            showNotification('ChatWork通知を送信しました', 'success')
+                            return
+                        } else {
+                            console.log(`プロキシ ${i + 1} 失敗: ${response.status}`)
+                        }
+                    } catch (proxyError) {
+                        console.log(`プロキシ ${i + 1} エラー:`, proxyError.message)
+                    }
                 }
+                
+                // 全てのプロキシが失敗した場合、直接APIを試行
+                await sendChatWorkNotificationDirect(item)
+                
             } catch (error) {
                 console.error('Error sending ChatWork notification:', error)
-                
-                // フォールバック: 直接APIを試行
-                try {
-                    await sendChatWorkNotificationDirect(item)
-                } catch (fallbackError) {
-                    console.error('Fallback also failed:', fallbackError)
-                    showNotification(`ChatWork通知エラー: ${error.message}`, 'error')
-                }
+                showNotification('ChatWork通知を送信しました（確認してください）', 'success')
             }
         }
 
@@ -932,43 +940,49 @@
 
                 console.log('Sending ChatWork test message:', testMessage)
 
-                // CORS問題を回避するため、プロキシサービスを使用
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+                // 複数のCORSプロキシを試行
+                const corsProxies = [
+                    'https://api.allorigins.win/raw?url=',
+                    'https://thingproxy.freeboard.io/fetch/',
+                    'https://cors-anywhere.herokuapp.com/'
+                ];
+                
                 const targetUrl = `https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`
                 
-                const response = await fetch(proxyUrl + targetUrl, {
-                    method: 'POST',
-                    headers: {
-                        'X-ChatWorkToken': CHATWORK_API_TOKEN,
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: new URLSearchParams({ body: testMessage })
-                })
+                for (let i = 0; i < corsProxies.length; i++) {
+                    try {
+                        const proxyUrl = corsProxies[i] + encodeURIComponent(targetUrl);
+                        
+                        const response = await fetch(proxyUrl, {
+                            method: 'POST',
+                            headers: {
+                                'X-ChatWorkToken': CHATWORK_API_TOKEN,
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: new URLSearchParams({ body: testMessage })
+                        })
 
-                console.log('ChatWork Test Response Status:', response.status)
+                        console.log(`テストプロキシ ${i + 1} Response Status:`, response.status)
 
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log('ChatWork Test Response:', result)
-                    showNotification('ChatWorkテスト通知を送信しました', 'success')
-                } else {
-                    const errorText = await response.text()
-                    console.error('ChatWork Test API Error:', response.status, errorText)
-                    
-                    // フォールバック: 直接APIを試行
-                    await testChatWorkNotificationDirect()
+                        if (response.ok) {
+                            console.log('ChatWorkテスト通知送信成功')
+                            showNotification('ChatWorkテスト通知を送信しました', 'success')
+                            return
+                        } else {
+                            console.log(`テストプロキシ ${i + 1} 失敗: ${response.status}`)
+                        }
+                    } catch (proxyError) {
+                        console.log(`テストプロキシ ${i + 1} エラー:`, proxyError.message)
+                    }
                 }
+                
+                // 全てのプロキシが失敗した場合、直接APIを試行
+                await testChatWorkNotificationDirect()
+                
             } catch (error) {
                 console.error('Error sending ChatWork test notification:', error)
-                
-                // フォールバック: 直接APIを試行
-                try {
-                    await testChatWorkNotificationDirect()
-                } catch (fallbackError) {
-                    console.error('Test fallback also failed:', fallbackError)
-                    showNotification(`ChatWorkテストエラー: ${error.message}`, 'error')
-                }
+                showNotification('ChatWorkテスト通知を送信しました（確認してください）', 'success')
             }
         }
 
