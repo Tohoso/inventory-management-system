@@ -18,21 +18,39 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { message, roomId, token } = req.body;
+        // Vercel環境変数から設定を取得
+        const CHATWORK_API_TOKEN = process.env.CHATWORK_API_TOKEN;
+        const CHATWORK_ROOM_ID = process.env.CHATWORK_ROOM_ID;
 
-        // 必須パラメータの確認
-        if (!message || !roomId || !token) {
-            res.status(400).json({ 
-                error: 'Missing required parameters: message, roomId, token' 
+        // 環境変数の確認
+        if (!CHATWORK_API_TOKEN || !CHATWORK_ROOM_ID) {
+            console.error('Missing environment variables:', {
+                hasToken: !!CHATWORK_API_TOKEN,
+                hasRoomId: !!CHATWORK_ROOM_ID
+            });
+            res.status(500).json({ 
+                error: 'Server configuration error: Missing ChatWork credentials' 
             });
             return;
         }
 
+        const { message } = req.body;
+
+        // 必須パラメータの確認
+        if (!message) {
+            res.status(400).json({ 
+                error: 'Missing required parameter: message' 
+            });
+            return;
+        }
+
+        console.log('Sending ChatWork message to room:', CHATWORK_ROOM_ID);
+
         // ChatWork APIへのリクエスト
-        const chatworkResponse = await fetch(`https://api.chatwork.com/v2/rooms/${roomId}/messages`, {
+        const chatworkResponse = await fetch(`https://api.chatwork.com/v2/rooms/${CHATWORK_ROOM_ID}/messages`, {
             method: 'POST',
             headers: {
-                'X-ChatWorkToken': token,
+                'X-ChatWorkToken': CHATWORK_API_TOKEN,
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
@@ -42,6 +60,7 @@ export default async function handler(req, res) {
 
         if (chatworkResponse.ok) {
             const result = await chatworkResponse.json();
+            console.log('ChatWork API Success:', result);
             res.status(200).json({
                 success: true,
                 message: 'ChatWork notification sent successfully',
