@@ -948,6 +948,13 @@
             }
         }
 
+        // ChatWorkテスト通知関数
+        async function sendChatWorkTestNotification() {
+            try {
+                const testMessage = `🧪 ChatWorkテスト通知
+
+在庫管理システムからのテスト通知です。
+
 送信時刻: ${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`
 
                 console.log('Sending ChatWork test message:', testMessage)
