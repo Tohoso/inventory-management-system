@@ -459,9 +459,9 @@
     </div>
 
     <script>
-        // 環境変数から設定を取得（Vercel環境変数対応）
+        // 環境変数から設定を取得（サーバーサイドで管理）
         const SUPABASE_URL = 'https://yyoixwdljeoxtieeazfo.supabase.co'
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5b2l4d2RsamVveHRpZWVhemZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjY3NTQsImV4cCI6MjA2OTUwMjc1NH0.Lp1GLRlXI57odcpNhSl5TB2bOKSSW5Ce66_KuO_7tFs'
+        // const SUPABASE_ANON_KEY = 'サーバーサイドで管理'
         
         // ChatWork設定（環境変数で管理されるため、フロントエンドでは不要）
         // const CHATWORK_API_TOKEN = 'サーバーサイドで管理'
@@ -477,38 +477,36 @@
             }, 1000)
         })
 
-        // Supabase REST API呼び出し関数（エラーハンドリング強化）
+        // Supabase REST API呼び出し関数（サーバーサイドプロキシ経由）
         async function supabaseRequest(endpoint, options = {}) {
-            const url = `${SUPABASE_URL}/rest/v1${endpoint}`
+            const url = `/api/supabase?endpoint=${encodeURIComponent(endpoint)}`
             
             const defaultOptions = {
+                method: 'GET',
                 headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=minimal'
+                    'Content-Type': 'application/json'
                 }
             }
-
-            const finalOptions = {
-                ...defaultOptions,
-                ...options,
-                headers: {
-                    ...defaultOptions.headers,
-                    ...options.headers
-                }
-            }
-
-            console.log('Supabase Request:', url, finalOptions)
-
+            
+            const mergedOptions = { ...defaultOptions, ...options }
+            
             try {
-                const response = await fetch(url, finalOptions)
-                console.log('Supabase Response Status:', response.status)
+                console.log('Supabase Proxy Request:', url)
+                const response = await fetch(url, mergedOptions)
+                console.log('Supabase Proxy Response Status:', response.status)
                 
                 if (!response.ok) {
-                    const errorText = await response.text()
-                    console.error('Supabase Error Response:', errorText)
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                
+                const data = await response.json()
+                console.log('Supabase Proxy Response Data:', data)
+                return data
+            } catch (error) {
+                console.error('Supabase Proxy Error:', error)
+                throw error
+            }
+        }: ${errorText}`)
                 }
                 
                 // PATCHリクエストの場合、レスポンスボディが空の場合がある
@@ -525,28 +523,23 @@
             }
         }
 
-        // 在庫データ読み込み（エラーハンドリング強化）
+        // 在庫データを読み込む
         async function loadInventory() {
             console.log('Loading inventory data...')
             
             try {
                 document.getElementById('inventoryGrid').innerHTML = '<div class="loading">データを読み込み中...</div>'
                 
-                const data = await supabaseRequest('/inventory_items?select=*&order=name')
+                const data = await supabaseRequest('inventory_items?select=*&order=name')
                 console.log('Loaded inventory data:', data)
                 
-                if (Array.isArray(data)) {
-                    inventoryData = data
-                    filteredData = [...inventoryData]
-                    
-                    updateStats()
-                    updateFilters()
-                    renderInventory()
-                    
-                    showNotification(`${inventoryData.length}件のアイテムを読み込みました`, 'success')
-                } else {
-                    throw new Error('Invalid data format received')
-                }
+                inventoryData = data
+                filteredData = [...inventoryData]
+                
+                displayInventory()
+                updateStatistics()
+                
+                showMessage(`${inventoryData.length}件のアイテムを読み込みました`, 'success')
             } catch (error) {
                 console.error('Error loading inventory:', error)
                 document.getElementById('inventoryGrid').innerHTML = `
@@ -556,7 +549,7 @@
                         <button class="btn btn-primary" onclick="loadInventory()" style="margin-top: 10px;">再試行</button>
                     </div>
                 `
-                showNotification('データの読み込みに失敗しました', 'error')
+                showMessage('データの読み込みに失敗しました', 'error')
             }
         }
 
