@@ -508,20 +508,6 @@
             }
         }
         
-        // PATCHリクエストの場合、レスポンスボディが空の場合がある
-        if (options.method === 'PATCH' && response.status === 204) {
-            return { success: true }
-        }
-                
-                const data = await response.json()
-                console.log('Supabase Response Data:', data)
-                return data
-            } catch (error) {
-                console.error('Supabase Request Error:', error)
-                throw error
-            }
-        }
-
         // 在庫データを読み込む
         async function loadInventory() {
             console.log('Loading inventory data...')
