@@ -521,10 +521,10 @@
                 inventoryData = data
                 filteredData = [...inventoryData]
                 
-                displayInventory()
+                renderInventory()
                 updateStatistics()
                 
-                showMessage(`${inventoryData.length}件のアイテムを読み込みました`, 'success')
+                showNotification(`${inventoryData.length}件のアイテムを読み込みました`, 'success')
             } catch (error) {
                 console.error('Error loading inventory:', error)
                 document.getElementById('inventoryGrid').innerHTML = `
@@ -534,7 +534,7 @@
                         <button class="btn btn-primary" onclick="loadInventory()" style="margin-top: 10px;">再試行</button>
                     </div>
                 `
-                showMessage('データの読み込みに失敗しました', 'error')
+                showNotification('データの読み込みに失敗しました', 'error')
             }
         }
 
