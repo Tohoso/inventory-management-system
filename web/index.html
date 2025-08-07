@@ -764,13 +764,17 @@
             }
 
             try {
+                // 更新前の在庫数を取得
+                const itemIndex = inventoryData.findIndex(item => item.id === itemId)
+                const item = inventoryData[itemIndex]
+                const previousStock = item ? item.current_stock : 0
+
                 await supabaseRequest(`/inventory_items?id=eq.${itemId}`, {
                     method: 'PATCH',
                     body: JSON.stringify({ current_stock: newStock })
                 })
 
                 // ローカルデータも更新
-                const itemIndex = inventoryData.findIndex(item => item.id === itemId)
                 if (itemIndex !== -1) {
                     inventoryData[itemIndex].current_stock = newStock
                 }
@@ -778,6 +782,18 @@
                 filterInventory()
                 updateStats()
                 showNotification('在庫を更新しました', 'success')
+
+                // 自動ChatWork通知: 在庫が要発注数を下回った場合
+                if (item && newStock <= item.min_stock && previousStock > item.min_stock) {
+                    console.log(`在庫不足検知: ${item.name} (現在: ${newStock}, 最小: ${item.min_stock})`)
+                    try {
+                        await sendChatWorkNotification(item)
+                        showNotification(`${item.name}の発注通知を送信しました`, 'info')
+                    } catch (notificationError) {
+                        console.error('ChatWork通知エラー:', notificationError)
+                        // 通知エラーでも在庫更新は成功として扱う
+                    }
+                }
             } catch (error) {
                 console.error('Error updating stock:', error)
                 showNotification(`在庫更新エラー: ${error.message}`, 'error')
