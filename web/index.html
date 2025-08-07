@@ -506,13 +506,12 @@
                 console.error('Supabase Proxy Error:', error)
                 throw error
             }
-        }: ${errorText}`)
-                }
-                
-                // PATCHリクエストの場合、レスポンスボディが空の場合がある
-                if (options.method === 'PATCH' && response.status === 204) {
-                    return { success: true }
-                }
+        }
+        
+        // PATCHリクエストの場合、レスポンスボディが空の場合がある
+        if (options.method === 'PATCH' && response.status === 204) {
+            return { success: true }
+        }
                 
                 const data = await response.json()
                 console.log('Supabase Response Data:', data)
