@@ -1,19 +1,18 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "web/**",
-      "use": "@vercel/static"
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "@vercel/node@18"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/web/$1"
+      "source": "/",
+      "destination": "/web/index.html"
     },
     {
-      "src": "/",
-      "dest": "/web/index.html"
+      "source": "/((?!api/).*)",
+      "destination": "/web/$1"
     }
   ]
 }
